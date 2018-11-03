@@ -1,0 +1,5 @@
+.overlay .video {
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateY(25%);
+}

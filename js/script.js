@@ -3,6 +3,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
     let mentorBlock = document.getElementsByClassName('hanson')[0];
 
+    // Slider for the main page
+
     let slideIndex = 1,
         slides = document.querySelectorAll('.slide'),
         next = document.querySelectorAll('.next');
@@ -48,12 +50,32 @@ window.addEventListener('DOMContentLoaded', function() {
 
     next.forEach(function(element) {
         element.addEventListener('click', function() {
-            console.log(slideIndex);
             nextSlide(1);
-            console.log(slideIndex);
         });
     })
     
     showSlides(slideIndex);
+
+    // Play video button script
+
+    let btnPlay = document.querySelectorAll('.play'),
+        overlay = document.querySelector('.overlay'),
+        btnClose = document.querySelectorAll('.close'),
+        videoFrame = document.querySelector('.overlay .video iframe');
+
+    btnPlay.forEach(function(element) {
+        element.addEventListener('click', function() {
+            let videoURL = this.getAttribute('data-url');
+            overlay.style.display = 'block';
+            videoFrame.src = videoURL;
+        });
+    })
+
+    btnClose.forEach(function(element) {
+        element.addEventListener('click', function() {
+            overlay.style.display = 'none';
+        });
+    })
+
 
 });
