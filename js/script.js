@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', function() {
     'use strict';
 
-    let mentorBlock = document.getElementsByClassName('hanson')[0];
+    let mentorBlock = document.querySelector('.hanson');
 
     // Slider for the main page
 
@@ -44,13 +44,31 @@ window.addEventListener('DOMContentLoaded', function() {
         
     }
 
-    function currentSlide(item) {
-        showSlides(slideIndex = item);
-    }
-
     next.forEach(function(element) {
         element.addEventListener('click', function() {
             nextSlide(1);
+            console.log(slideIndex);
+            if (slideIndex == 3) {
+                let blockStyle = getComputedStyle(mentorBlock),
+                    bottomPosition = blockStyle.bottom;
+                setTimeout(function() {
+                    console.log(bottomPosition);
+                    let timer = setInterval(function() {
+                        let bottomPositionPx = +bottomPosition.split('px')[0];
+                        console.log(bottomPositionPx);
+                        if (bottomPositionPx >= 0) {
+                            clearInterval(timer);
+                            mentorBlock.style.bottom = '0px';
+                        }
+                        else {
+                            bottomPositionPx = bottomPositionPx + 10;
+                            bottomPosition = bottomPositionPx + 'px';
+                            mentorBlock.style.bottom = bottomPosition;
+                        }
+                    }, 20);
+                }, 3000);
+                
+            }
         });
     })
     
