@@ -40,8 +40,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     function nextSlide(item) {
         slideIndex += item;
-        showSlides(slideIndex);
-        
+        showSlides(slideIndex); 
     }
 
     next.forEach(function(element) {
@@ -58,7 +57,6 @@ window.addEventListener('DOMContentLoaded', function() {
                         console.log(bottomPositionPx);
                         if (bottomPositionPx >= 0) {
                             clearInterval(timer);
-                            mentorBlock.style.bottom = '0px';
                         }
                         else {
                             bottomPositionPx = bottomPositionPx + 10;
@@ -74,12 +72,78 @@ window.addEventListener('DOMContentLoaded', function() {
     
     showSlides(slideIndex);
 
+    // Slider on the main page
+
+    let mainPageSlideIndex = 1,
+        mainPageSliderWrapper = document.querySelector('.showup__content-slider'),
+        mainPageSlides = document.querySelectorAll('.showup__content-slider .card'),
+        mainPageCardTitle = document.querySelectorAll('.card__title'),
+        activeSlideArrow = document.querySelectorAll('.card__controls-arrow'),
+        mainPagePrev = document.querySelector('.slick-prev'),
+        mainPageNext = document.querySelector('.slick-next');
+
+    function showMainPageSlides(item) {
+
+        if (item > slides.length) {
+            mainPageSlideIndex = 1;
+        }
+        if (item < 1) {
+            mainPageSlideIndex = mainPageSlides.length;
+        }
+        mainPageSlides.forEach((slide, index) => {
+            // slide.style.opacity = 0.4;
+            activeSlideArrow[index].style.opacity = 0;
+            // changeOpacity(mainPageSlides[mainPageSlideIndex - 1], 1, 0);
+        });
+
+        // mainPageCardTitle[item].style.opacity = 1;
+        // activeSlideArrow[item].style.opacity = 1;
+        // changeOpacity(mainPageSlides[mainPageSlideIndex - 1], 0, 1);
+    };
+
+    function nextSlide(item) {
+        mainPageSlideIndex += item;
+        showMainPageSlides(mainPageSlideIndex); 
+    };
+
+    mainPagePrev.addEventListener('click', function() {
+        nextSlide(-1);
+        let mainPageFirstSlide = mainPageSliderWrapper.children[0],
+            mainPageLastSlide = mainPageSliderWrapper.children[mainPageSlides.length-1];
+
+        mainPageSliderWrapper.insertBefore(mainPageLastSlide, mainPageFirstSlide);
+        mainPageSlides.forEach((slide) => {
+            slide.classList.remove('card-active');
+        });
+        mainPageSliderWrapper.children[0].classList.add('card-active');
+    });
+
+    mainPageNext.addEventListener('click', function() {
+        nextSlide(1);
+        let mainPageFirstSlide = mainPageSliderWrapper.children[0],
+            mainPageLastSlide = mainPageSliderWrapper.children[mainPageSlides.length];
+
+        mainPageSliderWrapper.insertBefore(mainPageFirstSlide, mainPageLastSlide);
+        mainPageSlides.forEach((slide) => {
+            slide.classList.remove('card-active');
+        });
+        mainPageSliderWrapper.children[0].classList.add('card-active');
+    });
+
+    showMainPageSlides(mainPageSlideIndex);
+
+
+
     // Play video button script
 
     let btnPlay = document.querySelectorAll('.play'),
         overlay = document.querySelector('.overlay'),
         btnClose = document.querySelectorAll('.close'),
         videoFrame = document.querySelector('.overlay .video iframe');
+
+    if (videoFrame.src = 'none') {
+        console.log('no video stream detected');
+    }
 
     btnPlay.forEach(function(element) {
         element.addEventListener('click', function() {
