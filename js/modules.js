@@ -5,15 +5,15 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // Redirect to a specific slide 
 
+    let slideIndex = 1,
+        slides = document.querySelectorAll('.moduleapp .module-slide'),
+        prev = document.querySelectorAll('.prev'),
+        next = document.querySelectorAll('.next');
+
     if (window.location.hash) {
         let hash = window.location.hash.substring(1);
         showSlides(hash);
     }
-
-    let slideIndex = 1,
-        slides = document.querySelectorAll('.module-slide'),
-        prev = document.querySelectorAll('.prev'),
-        next = document.querySelectorAll('.next');
 
     function showSlides(item) {
 
