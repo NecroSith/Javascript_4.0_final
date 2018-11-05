@@ -3,3 +3,21 @@
     margin-right: auto;
     transform: translateY(25%);
 }
+
+.module__info-show {
+    display: flex;
+    flex-direction: column;
+}
+
+.info__wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.info__wrapper .plus {
+    margin-left: 10px;
+}
+
+.lorem {
+    display: none;
+}

@@ -151,13 +151,13 @@ window.addEventListener('DOMContentLoaded', function() {
             overlay.style.display = 'block';
             videoFrame.src = videoURL;
         });
-    })
+    });
 
     btnClose.forEach(function(element) {
         element.addEventListener('click', function() {
             overlay.style.display = 'none';
         });
-    })
+    });
 
 
 });
