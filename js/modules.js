@@ -1,5 +1,14 @@
+
+
 window.addEventListener('DOMContentLoaded', function() {
     'use strict';
+
+    // Redirect to a specific slide 
+
+    if (window.location.hash) {
+        let hash = window.location.hash.substring(1);
+        showSlides(hash);
+    }
 
     let slideIndex = 1,
         slides = document.querySelectorAll('.module-slide'),
@@ -38,11 +47,6 @@ window.addEventListener('DOMContentLoaded', function() {
     function nextSlide(item) {
         slideIndex += item;
         showSlides(slideIndex);
-        
-    }
-
-    function currentSlide(item) {
-        showSlides(slideIndex = item);
     }
 
     next.forEach(function(element) {
