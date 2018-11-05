@@ -1,27 +1,30 @@
 
 
 window.addEventListener('DOMContentLoaded', function() {
-    'use strict';
+    // 'use strict';
 
     // Redirect to a specific slide 
 
     let slideIndex = 1,
-        slides = document.querySelectorAll('.moduleapp .module-slide'),
+        slides = document.querySelectorAll('.module-slide'),
         prev = document.querySelectorAll('.prev'),
         next = document.querySelectorAll('.next');
 
-    if (window.location.hash) {
-        let hash = window.location.hash.substring(1);
-        showSlides(hash);
-    }
-
     function showSlides(item) {
+        console.log('init')
 
+        if (window.location.hash) {
+            let hash = window.location.hash.substring(1);
+            slideIndex = hash;
+            history.pushState("", document.title, window.location.pathname);
+        }
         if (item > slides.length) {
+            console.log('1')
             slideIndex = 1;
         }
         if (item < 1) {
             slideIndex = slides.length;
+            console.log('length')
         }
         slides.forEach((slide) => {
             slide.style.display = 'none';
@@ -31,6 +34,8 @@ window.addEventListener('DOMContentLoaded', function() {
         slides[slideIndex - 1].style.display = 'block';
         changeOpacity(slides[slideIndex - 1], 0, 1);
     };
+
+   
 
     function changeOpacity(element, from, to) {
         let timer = setInterval(function() {
@@ -62,6 +67,7 @@ window.addEventListener('DOMContentLoaded', function() {
     })
     
     showSlides(slideIndex);
+
 
     // play videos
 

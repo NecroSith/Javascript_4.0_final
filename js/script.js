@@ -210,6 +210,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     plusLink.addEventListener('click', function() {
         window.location.replace('modules.html#1');
+        history.pushState("", document.title, window.location.pathname);
     });
 
     // Validation form on slide 4
@@ -221,26 +222,16 @@ window.addEventListener('DOMContentLoaded', function() {
     };
 
     let form = document.querySelector('.form'),
-        formStatus = document.querySelector('.form__status'),
-        // feedbackForm = document.querySelector('.feedback-form'),
-        input = form.getElementsByTagName('.form-block div input'),
-        // feedbackInput = feedbackForm.getElementsByTagName('input'),
+        scheduleForm = document.querySelector('.form__schedule'),
+        input = form.querySelectorAll('.form__item input'),
+        scheduleInput = scheduleForm.querySelectorAll('.form-block div input'),
         statusIcon = document.createElement('div');
 
-    // form.addEventListener('submit', function(event) {
-    //     event.preventDefault();
-    //     sendJSONData(form, statusIcon, input, 'status-abs');
-    // });   
-    
-    // feedbackForm.addEventListener('submit', function(event) {
-    //     event.preventDefault();
-    //     sendJSONData(feedbackForm, statusIcon, feedbackInput, 'status');
-    // });
-
-    function sendJSONData(element, status) {
+    function sendJSONData(element, status, inputs) {
         element.addEventListener('submit', function(e) {
             e.preventDefault();
             statusIcon.classList.add(status);
+            let formStatus = element.querySelector('.form__status');
             formStatus.appendChild(statusIcon);
             let formData = new FormData(element);
 
@@ -268,9 +259,12 @@ window.addEventListener('DOMContentLoaded', function() {
             }
 
         function clearInput() {
-            for (let i = 0; i < input.length; i++) {
-                input[i].value = '';
-            }
+            // for (let i = 0; i < inputs.length; i++) {
+            //     inputs[i].value = '';
+            // }
+            inputs.forEach(function(element) {
+                element.value = '';
+            })
         }
 
         postData(formData)
@@ -279,11 +273,11 @@ window.addEventListener('DOMContentLoaded', function() {
                         .catch(() => statusIcon.innerHTML = message.failure)
                         .then(clearInput);
         });
-
-        // sendJSONData(feedbackForm, 'status');
     }
 
-    sendJSONData(form, 'status-abs');
+    sendJSONData(form, 'status-abs', input);
+    sendJSONData(scheduleForm, 'status-abs', scheduleInput);
+
 
     // Email field restrains
 
@@ -310,23 +304,31 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function mask(event) {
-        let matrix = "+1 (___) ___ __ __", // Our phone input mask
+        let matrix = "+1 (___) ___ __ __", 
             i = 0,
-            def = matrix.replace(/\D/g, ""), // Replace all non-digit symbols with nothing
+            def = matrix.replace(/\D/g, ""), 
             val = this.value.replace(/\D/g, "");
         if (def.length >= val.length) val = def;
         this.value = matrix.replace(/./g, function(a) {
             return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
-        }); // Returns matrix with
-        if (event.type == "blur") { // If focus moves away from the input
-            if (this.value.length == 2) this.value = "" // Delete all content from the field if there are no more than 2 symbols
-        } else setCursorPosition(this.value.length, this) // Else preserve all symbols
+        });
+        if (event.type == "blur") { 
+            if (this.value.length == 2) this.value = "" 
+        } else setCursorPosition(this.value.length, this)
     };
 
     let phoneInput = document.querySelector('#phone');
     phoneInput.addEventListener("input", mask, false);
     phoneInput.addEventListener("focus", mask, false);
     phoneInput.addEventListener("blur", mask, false);
+
+    // Input restriction for When field
+
+    let whenInput = document.querySelector('input[type="datetime"]');
+
+    whenInput.addEventListener('input', function() {
+        this.value = this.value.replace (/[^0-9/.]/, '');
+    });
 
 
 });
