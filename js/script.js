@@ -97,24 +97,24 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function swapSlides(sliderWrapper, slideItems, onwards = true) {
+    function swapSlides(sliderWrapper, slideItems, activeClass, onwards = true) {
         let firstSlide = sliderWrapper.children[0];
             
         if (onwards == true) {
             let lastSlide = sliderWrapper.children[slideItems.length];
             sliderWrapper.insertBefore(firstSlide, lastSlide);
             slideItems.forEach((slide) => {
-                slide.classList.remove('card-active');
+                slide.classList.remove(activeClass);
             });
-            sliderWrapper.children[0].classList.add('card-active');
+            sliderWrapper.children[0].classList.add(activeClass);
         }
         else {
             let lastSlide = sliderWrapper.children[slideItems.length-1];
             sliderWrapper.insertBefore(lastSlide, firstSlide);
             slideItems.forEach((slide) => {
-                slide.classList.remove('card-active');
+                slide.classList.remove(activeClass);
             });
-            sliderWrapper.children[0].classList.add('card-active');
+            sliderWrapper.children[0].classList.add(activeClass);
         }
     }
 
@@ -125,12 +125,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
     mainPagePrev.addEventListener('click', function() {
         nextMiniSlide(-1);
-        swapSlides(mainPageSliderWrapper, mainPageSlides, false);
+        swapSlides(mainPageSliderWrapper, mainPageSlides, 'card-active', false);
     });
 
     mainPageNext.addEventListener('click', function() {
         nextMiniSlide(1);
-        swapSlides(mainPageSliderWrapper, mainPageSlides, true);
+        swapSlides(mainPageSliderWrapper, mainPageSlides, 'card-active', true);
     });
 
     // Slider on the third page 
@@ -149,13 +149,36 @@ window.addEventListener('DOMContentLoaded', function() {
 
     thirdPagePrev.addEventListener('click', function() {
         nextMiniSlideThird(-1);
-        swapSlides(thirdPageSliderWrapper, thirdPageSlides, false);
+        swapSlides(thirdPageSliderWrapper, thirdPageSlides, 'card-active', false);
     });
 
     thirdPageNext.addEventListener('click', function() {
         nextMiniSlideThird(1);
-        swapSlides(thirdPageSliderWrapper, thirdPageSlides, true);
+        swapSlides(thirdPageSliderWrapper, thirdPageSlides, 'card-active', true);
     });
+
+    // Slider on the fifth page
+    let fifthPageSlideIndex = 1,
+        fifthPageSliderWrapper = document.querySelector('.feed__slider'),
+        fifthPageSlides = document.querySelectorAll('.feed__item'),
+        fifthPagePrev = document.querySelector('.feed__controls .slick-prev'),
+        fifthPageNext = document.querySelector('.feed__controls .slick-next');
+
+    function nextMiniSlideFifth(item) {
+        fifthPageSlideIndex += item;
+        showMiniSlides(fifthPageSlideIndex, fifthPageSlides, '');
+    };
+
+    fifthPagePrev.addEventListener('click', function() {
+        nextMiniSlideFifth(-1);
+        swapSlides(fifthPageSliderWrapper, fifthPageSlides, 'feed__item-active', false);
+    });
+
+    fifthPageNext.addEventListener('click', function() {
+        nextMiniSlideFifth(1);
+        swapSlides(fifthPageSliderWrapper, fifthPageSlides, 'feed__item-active', true);
+    });
+
 
 
     // Play video button script
