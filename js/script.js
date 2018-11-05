@@ -157,6 +157,12 @@ window.addEventListener('DOMContentLoaded', function() {
         swapSlides(thirdPageSliderWrapper, thirdPageSlides, 'card-active', true);
     });
 
+    setInterval(function() {
+        console.log('yo');
+        nextMiniSlideThird(1);
+        swapSlides(thirdPageSliderWrapper, thirdPageSlides, 'card-active', true);
+    }, 4000);
+
     // Slider on the fifth page
     let fifthPageSlideIndex = 1,
         fifthPageSliderWrapper = document.querySelector('.feed__slider'),
@@ -223,9 +229,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
     let form = document.querySelector('.form'),
         scheduleForm = document.querySelector('.form__schedule'),
-        input = form.querySelectorAll('.form__item input'),
-        scheduleInput = scheduleForm.querySelectorAll('.form-block div input'),
+        input = document.querySelectorAll('.form__item input'),
+        scheduleInput = document.querySelectorAll('.form__block div input'),
         statusIcon = document.createElement('div');
+
+    console.log('Input length:' + scheduleInput.length);
 
     function sendJSONData(element, status, inputs) {
         element.addEventListener('submit', function(e) {
@@ -275,8 +283,8 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    sendJSONData(form, 'status-abs', input);
-    sendJSONData(scheduleForm, 'status-abs', scheduleInput);
+    sendJSONData(form, 'status-abs', scheduleInput);
+    sendJSONData(scheduleForm, 'status-abs', input);
 
 
     // Email field restrains
