@@ -137,7 +137,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     let thirdPageSlideIndex = 1,
         thirdPageSliderWrapper = document.querySelector('.modules__content-slider'),
-        thirdPageSlides = document.querySelectorAll('.showup__content-slider .card'),
+        thirdPageSlides = document.querySelectorAll('.modules__content-slider .card'),
         activeSlideArrowThird = document.querySelectorAll('.card__controls-arrow'),
         thirdPagePrev = document.querySelector('.modules__info-btns--third .slick-prev'),
         thirdPageNext = document.querySelector('.modules__info-btns--third .slick-next');
@@ -212,5 +212,121 @@ window.addEventListener('DOMContentLoaded', function() {
         window.location.replace('modules.html#1');
     });
 
+    // Validation form on slide 4
+
+    let message = {
+        loading: '<img src="./img/ajax-loader.gif">',
+        success: '<img src="./img/success.svg">',
+        failure: '<img src="./img/error.svg">'
+    };
+
+    let form = document.querySelector('.form'),
+        formStatus = document.querySelector('.form__status'),
+        // feedbackForm = document.querySelector('.feedback-form'),
+        input = form.getElementsByTagName('.form-block div input'),
+        // feedbackInput = feedbackForm.getElementsByTagName('input'),
+        statusIcon = document.createElement('div');
+
+    // form.addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     sendJSONData(form, statusIcon, input, 'status-abs');
+    // });   
     
+    // feedbackForm.addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     sendJSONData(feedbackForm, statusIcon, feedbackInput, 'status');
+    // });
+
+    function sendJSONData(element, status) {
+        element.addEventListener('submit', function(e) {
+            e.preventDefault();
+            statusIcon.classList.add(status);
+            formStatus.appendChild(statusIcon);
+            let formData = new FormData(element);
+
+            function postData(data) {
+                return new Promise(function(resolve, reject) {
+                    let request = new XMLHttpRequest();
+                    request.open('POST', 'server.php');
+                    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+                    request.onreadystatechange = function() {
+                        if (request.readyState < 4) {
+                            resolve();
+                        }
+                        else if (request.readyState === 4) {
+                            if (request.status == 200) {
+                                resolve();
+                            }
+                            else {
+                                reject();
+                            }
+                        }
+                    }
+                    request.send(data);
+                });
+            }
+
+        function clearInput() {
+            for (let i = 0; i < input.length; i++) {
+                input[i].value = '';
+            }
+        }
+
+        postData(formData)
+                        .then(() => statusIcon.innerHTML = message.loading)
+                        .then(() => statusIcon.innerHTML = message.success)
+                        .catch(() => statusIcon.innerHTML = message.failure)
+                        .then(clearInput);
+        });
+
+        // sendJSONData(feedbackForm, 'status');
+    }
+
+    sendJSONData(form, 'status-abs');
+
+    // Email field restrains
+
+    let emailInputs = document.querySelectorAll('input[type="email"]');
+
+    emailInputs.forEach(function(element) {
+        element.addEventListener('input', function() {
+            this.value = this.value.replace (/[А-Яа-яёЁ]/, '');
+        });
+    });
+
+    // Phone mask with USA code
+
+    function setCursorPosition(pos, elem) {
+        elem.focus();
+        if (elem.setSelectionRange) elem.setSelectionRange(pos, pos);
+        else if (elem.createTextRange) {
+            let range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd("character", pos);
+            range.moveStart("character", pos);
+            range.select()
+        }
+    }
+
+    function mask(event) {
+        let matrix = "+1 (___) ___ __ __", // Our phone input mask
+            i = 0,
+            def = matrix.replace(/\D/g, ""), // Replace all non-digit symbols with nothing
+            val = this.value.replace(/\D/g, "");
+        if (def.length >= val.length) val = def;
+        this.value = matrix.replace(/./g, function(a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+        }); // Returns matrix with
+        if (event.type == "blur") { // If focus moves away from the input
+            if (this.value.length == 2) this.value = "" // Delete all content from the field if there are no more than 2 symbols
+        } else setCursorPosition(this.value.length, this) // Else preserve all symbols
+    };
+
+    let phoneInput = document.querySelector('#phone');
+    phoneInput.addEventListener("input", mask, false);
+    phoneInput.addEventListener("focus", mask, false);
+    phoneInput.addEventListener("blur", mask, false);
+
+
 });
