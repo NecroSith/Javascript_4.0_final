@@ -19,5 +19,16 @@
 }
 
 .lorem {
+    text-align: center;
     display: none;
+}
+
+.closed {
+    height: 57px;
+    transition: all 0.5s ease-in;
+}
+
+.opened {
+    height: 280px;
+    transition: all 0.5s ease-in;
 }
