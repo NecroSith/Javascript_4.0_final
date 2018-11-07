@@ -14,14 +14,16 @@ function PlayVideoMainPage() {
     btnPlay.forEach(function(element) {
         element.addEventListener('click', function() {
             let videoURL = this.getAttribute('data-url');
-            overlay.style.display = 'block';
             videoFrame.src = videoURL;
+            setTimeout(function() {
+                overlay.style.display = 'block';}, 250);
         });
     });
 
     btnClose.forEach(function(element) {
         element.addEventListener('click', function() {
             overlay.style.display = 'none';
+            videoFrame.src = '#';
         });
     });
 
@@ -39,15 +41,15 @@ function PlayVideoModulesPage() {
 
 
     let btnPlay = document.querySelectorAll('.play-first'),
-    playCircle = document.querySelectorAll('.closed'),
-    btnPlaySecond = document.querySelectorAll('.play-second'),
-    isPlayed = false,
-    overlay = document.querySelector('.overlay'),
-    btnClose = document.querySelectorAll('.close'),
-    videoFrame = document.querySelector('.overlay .video iframe');
+        playCircle = document.querySelectorAll('.closed'),
+        btnPlaySecond = document.querySelectorAll('.play-second'),
+        isPlayed = false,
+        overlay = document.querySelector('.overlay'),
+        btnClose = document.querySelectorAll('.close'),
+        videoFrame = document.querySelector('.overlay .video iframe');
 
     if (videoFrame.src = 'none') {
-    console.log('no video stream detected');
+        console.log('no video stream detected');
     }
 
     btnPlay.forEach(function(element, index) {
@@ -68,18 +70,21 @@ function PlayVideoModulesPage() {
     });
 
     btnPlaySecond.forEach(function(element, index) {
-    element.addEventListener('click', function() {
-        if (isPlayed == true) {
-            let videoURL = this.children[1].getAttribute('data-url');
-            overlay.style.display = 'block';
-            videoFrame.src = videoURL;
-        }
-    });
+        element.addEventListener('click', function() {
+            if (isPlayed == true) {
+                let videoURL = this.children[1].getAttribute('data-url');
+                videoFrame.src = videoURL;
+                setTimeout(function() {
+                    overlay.style.display = 'block';}, 250);
+                
+            }
+        });
     });
 
     btnClose.forEach(function(element) {
     element.addEventListener('click', function() {
         overlay.style.display = 'none';
+        videoFrame.src = '#';
     });
     });
 }
